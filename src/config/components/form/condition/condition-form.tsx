@@ -13,44 +13,7 @@ type Props = ContainerProps & {
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
-const Component: FCX<Props> = ({ className, condition, appFields, onChange }) => (
-  <div {...{ className }}>
-    <div>
-      <h3>対象フィールド</h3>
-      <TextField
-        select
-        value={condition.field}
-        label='フィールド名'
-        {...{ onChange }}
-        className='input'
-      >
-        {Object.values(appFields).map(({ code, label }, i) => (
-          <MenuItem key={i} value={code}>
-            {label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
-  </div>
-);
-
-const StyledComponent = styled(Component)`
-  padding: 0 16px;
-  > div {
-    padding: 8px 8px 8px 16px;
-    border-left: 2px solid #0002;
-    > h3 {
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-  }
-
-  .input {
-    min-width: 250px;
-  }
-`;
-
-const Container: FC<ContainerProps> = ({ condition, index }) => {
+const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
   const appFields = useRecoilValue(appFieldsState);
   const setStorage = useSetRecoilState(storageState);
 
@@ -65,11 +28,45 @@ const Container: FC<ContainerProps> = ({ condition, index }) => {
     );
   };
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onFieldChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setConditionProps('field', e.target.value);
   };
 
-  return <StyledComponent {...{ condition, index, appFields, onChange }} />;
+  const onLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setConditionProps('label', e.target.value);
+  };
+
+  return (
+    <div {...{ className }}>
+      <TextField
+        sx={{ minWidth: '250px' }}
+        select
+        value={condition.field}
+        label='対象フィールド'
+        onChange={onFieldChange}
+        className='input'
+      >
+        {Object.values(appFields).map(({ code, label }, i) => (
+          <MenuItem key={i} value={code}>
+            {label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <TextField
+        sx={{ minWidth: '350px' }}
+        value={condition.label}
+        label='表示するヒント'
+        onChange={onLabelChange}
+        className='input'
+      />
+    </div>
+  );
 };
 
-export default Container;
+const StyledComponent = styled(Component)`
+  padding: 0 16px;
+  display: flex;
+  gap: 1.5rem;
+`;
+
+export default StyledComponent;
