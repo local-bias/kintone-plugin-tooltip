@@ -1,17 +1,12 @@
-import React, { ChangeEventHandler, FC, FCX } from 'react';
+import React, { ChangeEventHandler, FCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
-import { Properties } from '@kintone/rest-api-client/lib/client/types';
 
 import { appFieldsState, storageState } from '../../../states';
 import { MenuItem, TextField } from '@mui/material';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
-type Props = ContainerProps & {
-  appFields: Properties;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-};
 
 const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
   const appFields = useRecoilValue(appFieldsState);
@@ -53,6 +48,7 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
         ))}
       </TextField>
       <TextField
+        multiline
         sx={{ minWidth: '350px' }}
         value={condition.label}
         label='表示するヒント'
@@ -64,7 +60,6 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
 };
 
 const StyledComponent = styled(Component)`
-  padding: 0 16px;
   display: flex;
   gap: 1.5rem;
 `;
