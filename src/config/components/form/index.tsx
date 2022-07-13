@@ -29,7 +29,7 @@ const StyledComponent = styled(Component)`
   width: 100%;
 
   & > div {
-    padding: 1em;
+    padding: 1em 0;
   }
 `;
 
