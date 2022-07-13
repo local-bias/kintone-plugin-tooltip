@@ -56,8 +56,6 @@ const action: launcher.Action = async (event, pluginId) => {
       }
     `);
 
-    console.log('condition.label', condition.label);
-
     const root = document.createElement('span');
     target.append(root);
     createRoot(root).render(
