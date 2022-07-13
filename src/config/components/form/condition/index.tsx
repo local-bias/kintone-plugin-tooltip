@@ -1,33 +1,27 @@
-import React, { memo, useState, FC, FCX } from 'react';
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
+import React, { memo, FC, FCX } from 'react';
 
 import ConditionForm from './condition-form';
 import ConditionDeletionButton from '../condition-deletion-button';
+import styled from '@emotion/styled';
 
 type ContainerProps = Readonly<{ condition: kintone.plugin.Condition; index: number }>;
-type Props = ContainerProps & {
-  expanded: boolean;
-  onChange: () => void;
-};
+type Props = ContainerProps & {};
 
-const Component: FCX<Props> = ({ className, condition, index, expanded, onChange }) => (
-  <Accordion {...{ expanded, onChange, className }} variant='outlined' square>
-    <AccordionSummary>設定{index + 1}</AccordionSummary>
-    <AccordionDetails>
-      <ConditionForm {...{ condition, index }} />
-    </AccordionDetails>
-    <AccordionActions>
-      <ConditionDeletionButton {...{ index }} />
-    </AccordionActions>
-  </Accordion>
+const Component: FCX<Props> = ({ className, condition, index }) => (
+  <div className={className}>
+    <ConditionForm {...{ condition, index }} />
+    <ConditionDeletionButton {...{ index }} />
+  </div>
 );
 
+const StyledComponent = styled(Component)`
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+`;
+
 const Container: FC<ContainerProps> = memo(({ condition, index }) => {
-  const [expanded, setExpanded] = useState<boolean>(index === 0);
-
-  const onChange = () => setExpanded((_expanded) => !_expanded);
-
-  return <Component {...{ condition, index, expanded, onChange }} />;
+  return <StyledComponent {...{ condition, index }} />;
 });
 
 export default Container;
