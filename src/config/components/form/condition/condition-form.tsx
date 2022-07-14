@@ -43,13 +43,9 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
         options={appFields}
         onChange={(_, option) => onFieldChange(option)}
         getOptionLabel={(option) => option.label}
-        renderInput={(params) => {
-          console.log('autocomplete params', params);
-
-          return (
-            <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
-          );
-        }}
+        renderInput={(params) => (
+          <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
+        )}
       />
       <TextField
         multiline
