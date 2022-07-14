@@ -3,8 +3,10 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import produce from 'immer';
 
-import { appFieldsState, storageState } from '../../../states';
-import { MenuItem, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
+import { kx } from '../../../../types/kintone.api';
+import { appFieldsState } from '../../../states/kintone';
+import { storageState } from '../../../states/plugin';
 
 type ContainerProps = { condition: kintone.plugin.Condition; index: number };
 
@@ -23,8 +25,10 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
     );
   };
 
-  const onFieldChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setConditionProps('field', e.target.value);
+  const onFieldChange = (field: kx.FieldProperty | null) => {
+    if (field) {
+      setConditionProps('field', field.code);
+    }
   };
 
   const onLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -33,20 +37,20 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
 
   return (
     <div {...{ className }}>
-      <TextField
+      <Autocomplete
+        value={appFields.find((field) => field.code === condition.field)}
         sx={{ minWidth: '250px' }}
-        select
-        value={condition.field}
-        label='対象フィールド'
-        onChange={onFieldChange}
-        className='input'
-      >
-        {Object.values(appFields).map(({ code, label }, i) => (
-          <MenuItem key={i} value={code}>
-            {label}
-          </MenuItem>
-        ))}
-      </TextField>
+        options={appFields}
+        onChange={(_, option) => onFieldChange(option)}
+        getOptionLabel={(option) => option.label}
+        renderInput={(params) => {
+          console.log('autocomplete params', params);
+
+          return (
+            <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
+          );
+        }}
+      />
       <TextField
         multiline
         sx={{ minWidth: '350px' }}
