@@ -7,10 +7,10 @@ import { ErrorBoundary } from '@common/components/error-boundary';
 
 import Form from './components/form';
 import Footer from './components/footer';
-import SocialIcons from './components/social-icons';
 
 import { Loading } from '@common/components/loading';
 import { pluginIdState, storageState } from './states/plugin';
+import { URL_PROMOTION } from '@common/static';
 
 const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
   <Suspense fallback={<p>読み込み中...</p>}>
@@ -29,7 +29,12 @@ const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
         </SnackbarProvider>
       </ErrorBoundary>
     </RecoilRoot>
-    <SocialIcons />
+    <iframe
+      title='promotion'
+      loading='lazy'
+      src={URL_PROMOTION}
+      style={{ border: '0', width: '100%', height: '64px' }}
+    />
   </Suspense>
 );
 
