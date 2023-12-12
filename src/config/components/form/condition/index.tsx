@@ -4,7 +4,7 @@ import ConditionForm from './condition-form';
 import ConditionDeletionButton from '../condition-deletion-button';
 import styled from '@emotion/styled';
 
-type ContainerProps = Readonly<{ condition: kintone.plugin.Condition; index: number }>;
+type ContainerProps = Readonly<{ condition: Plugin.Condition; index: number }>;
 type Props = ContainerProps & {};
 
 const Component: FCX<Props> = ({ className, condition, index }) => (

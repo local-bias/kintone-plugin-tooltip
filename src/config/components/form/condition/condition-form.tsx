@@ -8,15 +8,15 @@ import { Autocomplete, TextField } from '@mui/material';
 import { appFieldsState } from '../../../states/kintone';
 import { storageState } from '../../../states/plugin';
 
-type ContainerProps = { condition: kintone.plugin.Condition; index: number };
+type ContainerProps = { condition: Plugin.Condition; index: number };
 
 const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
   const appFields = useRecoilValue(appFieldsState);
   const setStorage = useSetRecoilState(storageState);
 
-  const setConditionProps = <T extends keyof kintone.plugin.Condition>(
+  const setConditionProps = <T extends keyof Plugin.Condition>(
     key: T,
-    value: kintone.plugin.Condition[T]
+    value: Plugin.Condition[T]
   ) => {
     setStorage((_, _storage = _!) =>
       produce(_storage, (draft) => {
