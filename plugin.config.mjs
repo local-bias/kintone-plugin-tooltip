@@ -22,7 +22,7 @@ export default {
         ja: '特定のフィールドにアイコンを追加し、カーソルを合わせた際にヒントを表示します。',
         zh: '将图标添加到特定字段并在您将鼠标悬停在该字段上时显示提示',
       },
-      icon: 'image/icon.png',
+      icon: 'icon.png',
       homepage_url: { ja: hp, en: hp, zh: hp },
       desktop: {
         js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/desktop.js'],
@@ -33,7 +33,7 @@ export default {
         css: [],
       },
       config: {
-        html: 'html/config.html',
+        html: 'config.html',
         js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/config.js'],
         css: [],
         required_params: [],
