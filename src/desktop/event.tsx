@@ -1,11 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { getFields } from '@common/cybozu';
-import { restoreStorage } from '@common/plugin';
+import { getFields } from '@/lib/cybozu';
+import { restoreStorage } from '@/lib/plugin';
 import { css } from '@emotion/css';
 import { Tooltip } from '@mui/material';
-import { HelpIcon } from '@common/components/help-icon';
-import { PLUGIN_NAME } from '@common/static';
+import { HelpIcon } from '@/lib/components/help-icon';
+import { PLUGIN_NAME } from '@/lib/static';
+import { manager } from '@/lib/event-manager';
+import { PLUGIN_ID } from '@/lib/global';
 
 const events: launcher.Events = [
   'app.record.create.show',
@@ -16,10 +18,12 @@ const events: launcher.Events = [
 
 let rendered = false;
 
-const enables: launcher.Enables = (e) => !e.type.includes('index') || !rendered;
+manager.add(events, (event) => {
+  if (rendered && event.type.includes('index')) {
+    return event;
+  }
 
-const action: launcher.Action = async (event, pluginId) => {
-  const config = restoreStorage(pluginId);
+  const config = restoreStorage(PLUGIN_ID);
   rendered = true;
 
   const metaFields = getFields();
@@ -76,6 +80,4 @@ const action: launcher.Action = async (event, pluginId) => {
   }
 
   return event;
-};
-
-export default { events, action, enables };
+});
