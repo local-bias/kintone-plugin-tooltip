@@ -1,10 +1,10 @@
 import React, { ChangeEventHandler, FCX } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
-import produce from 'immer';
+import { produce } from 'immer';
+import { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 import { Autocomplete, TextField } from '@mui/material';
-import { kx } from '../../../../types/kintone.api';
 import { appFieldsState } from '../../../states/kintone';
 import { storageState } from '../../../states/plugin';
 
@@ -25,7 +25,7 @@ const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
     );
   };
 
-  const onFieldChange = (field: kx.FieldProperty | null) => {
+  const onFieldChange = (field: kintoneAPI.FieldProperty | null) => {
     if (field) {
       setConditionProps('field', field.code);
     }

@@ -1,5 +1,5 @@
-import { Record as KintoneRecord } from '@kintone/rest-api-client/lib/client/types';
 import { Cybozu } from '../types/cybozu';
+import { kintoneAPI } from '@konomi-app/kintone-utilities';
 
 declare const cybozu: Cybozu;
 
@@ -32,10 +32,10 @@ export const getQuery = (): string | null => getApp().getQuery();
 export const getQueryCondition = (): string | null => getApp().getQueryCondition();
 
 /** モバイル対応 ```kintone.app.record.get()``` */
-export const getCurrentRecord = (): { record: KintoneRecord } => getApp().record.get();
+export const getCurrentRecord = (): { record: kintoneAPI.RecordData } => getApp().record.get();
 
 /** モバイル対応 ```kintone.app.record.set()``` */
-export const setCurrentRecord = (record: { record: KintoneRecord }): void =>
+export const setCurrentRecord = (record: { record: kintoneAPI.RecordData }): void =>
   getApp().record.set(record);
 
 /** モバイル対応 ```kintone.app.record.setFieldShown()``` */
