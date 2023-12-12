@@ -26,11 +26,8 @@ const Component: FCX<Props> = ({ className, storage }) => (
 );
 
 const StyledComponent = styled(Component)`
-  width: 100%;
-
-  & > div {
-    padding: 1em 0;
-  }
+  display: grid;
+  gap: 8px;
 `;
 
 const Container: FC = () => {

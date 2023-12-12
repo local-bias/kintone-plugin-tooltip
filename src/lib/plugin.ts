@@ -1,5 +1,6 @@
 import { restoreStorage } from '@konomi-app/kintone-utilities';
 import { PLUGIN_ID } from './global';
+import { produce } from 'immer';
 
 export const getNewCondition = (): Plugin.Condition => ({
   field: '',
@@ -53,4 +54,18 @@ export const storeStorage = (target: Record<string, any>, callback?: () => void)
   );
 
   kintone.plugin.app.setConfig(converted, callback);
+};
+
+export const getUpdatedStorage = <T extends keyof Plugin.Condition>(
+  storage: Plugin.Config,
+  props: {
+    conditionIndex: number;
+    key: T;
+    value: Plugin.Condition[T];
+  }
+) => {
+  const { conditionIndex, key, value } = props;
+  return produce(storage, (draft) => {
+    draft.conditions[conditionIndex][key] = value;
+  });
 };

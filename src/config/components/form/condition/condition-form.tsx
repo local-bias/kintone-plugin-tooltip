@@ -1,51 +1,38 @@
 import React, { ChangeEventHandler, FCX } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useSetRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 import { produce } from 'immer';
-import { kintoneAPI } from '@konomi-app/kintone-utilities';
 
-import { Autocomplete, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { appFieldsState } from '../../../states/kintone';
-import { storageState } from '../../../states/plugin';
+import { getConditionPropertyState, storageState } from '../../../states/plugin';
+import { RecoilFieldSelect } from '@konomi-app/kintone-utilities-react';
 
 type ContainerProps = { condition: Plugin.Condition; index: number };
 
 const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
-  const appFields = useRecoilValue(appFieldsState);
-  const setStorage = useSetRecoilState(storageState);
+  const onFieldChange = useRecoilCallback(
+    ({ set }) =>
+      (fieldCode: string) => {
+        set(getConditionPropertyState({ index, property: 'field' }), fieldCode);
+      },
+    [index]
+  );
 
-  const setConditionProps = <T extends keyof Plugin.Condition>(
-    key: T,
-    value: Plugin.Condition[T]
-  ) => {
-    setStorage((_, _storage = _!) =>
-      produce(_storage, (draft) => {
-        draft.conditions[index][key] = value;
-      })
-    );
-  };
-
-  const onFieldChange = (field: kintoneAPI.FieldProperty | null) => {
-    if (field) {
-      setConditionProps('field', field.code);
-    }
-  };
-
-  const onLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setConditionProps('label', e.target.value);
-  };
+  const onLabelChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
+    ({ set }) =>
+      ({ target }) => {
+        set(getConditionPropertyState({ index, property: 'label' }), target.value);
+      },
+    [index]
+  );
 
   return (
     <div {...{ className }}>
-      <Autocomplete
-        value={appFields.find((field) => field.code === condition.field)}
-        sx={{ minWidth: '250px' }}
-        options={appFields}
-        onChange={(_, option) => onFieldChange(option)}
-        getOptionLabel={(option) => option.label}
-        renderInput={(params) => (
-          <TextField {...params} label='対象フィールド' variant='outlined' color='primary' />
-        )}
+      <RecoilFieldSelect
+        state={appFieldsState}
+        fieldCode={condition.field}
+        onChange={onFieldChange}
       />
       <TextField
         multiline
