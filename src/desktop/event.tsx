@@ -7,6 +7,13 @@ import { Tooltip } from '@mui/material';
 import { HelpIcon } from '@/lib/components/help-icon';
 import { PLUGIN_NAME } from '@/lib/static';
 import { manager } from '@/lib/event-manager';
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/solid';
+import Icon from './components/icon';
 
 let rendered = false;
 
@@ -33,9 +40,8 @@ manager.add(
     }
 
     for (const condition of config.conditions) {
-      condition.field;
-
-      const metaField = metaFields.find((field) => field.var === condition.field);
+      const { fieldCode, type } = condition;
+      const metaField = metaFields.find((field) => field.var === fieldCode);
       if (!metaField) {
         console.error(
           `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
@@ -77,7 +83,7 @@ manager.add(
           placement='top'
         >
           <span>
-            <HelpIcon fill='#999c' style={{ width: '1.1rem', height: '1.1rem' }} />
+            <Icon condition={condition} />
           </span>
         </Tooltip>
       );

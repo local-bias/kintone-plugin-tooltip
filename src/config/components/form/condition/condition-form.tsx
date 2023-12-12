@@ -1,54 +1,32 @@
 import React, { ChangeEventHandler, FCX } from 'react';
-import { useRecoilCallback, useSetRecoilState } from 'recoil';
-import styled from '@emotion/styled';
-import { produce } from 'immer';
+import { useRecoilCallback } from 'recoil';
 
 import { TextField } from '@mui/material';
 import { appFieldsState } from '../../../states/kintone';
-import { getConditionPropertyState, storageState } from '../../../states/plugin';
+import { getConditionPropertyState } from '../../../states/plugin';
 import { RecoilFieldSelect } from '@konomi-app/kintone-utilities-react';
+import TypeForm from './form-type';
+import IconTypeForm from './form-icon-type';
+import IconColorForm from './form-icon-color';
+import LabelForm from './form-label';
+import FieldcodeForm from './form-fieldcode';
 
-type ContainerProps = { condition: Plugin.Condition; index: number };
+type ContainerProps = { index: number };
 
-const Component: FCX<ContainerProps> = ({ className, condition, index }) => {
-  const onFieldChange = useRecoilCallback(
-    ({ set }) =>
-      (fieldCode: string) => {
-        set(getConditionPropertyState({ index, property: 'field' }), fieldCode);
-      },
-    [index]
-  );
-
-  const onLabelChange: ChangeEventHandler<HTMLInputElement> = useRecoilCallback(
-    ({ set }) =>
-      ({ target }) => {
-        set(getConditionPropertyState({ index, property: 'label' }), target.value);
-      },
-    [index]
-  );
-
+const Component: FCX<ContainerProps> = ({ index }) => {
   return (
-    <div {...{ className }}>
-      <RecoilFieldSelect
-        state={appFieldsState}
-        fieldCode={condition.field}
-        onChange={onFieldChange}
-      />
-      <TextField
-        multiline
-        sx={{ minWidth: '350px' }}
-        value={condition.label}
-        label='表示するヒント'
-        onChange={onLabelChange}
-        className='input'
-      />
+    <div className='grid gap-4'>
+      <div className='flex gap-2'>
+        <FieldcodeForm index={index} />
+        <LabelForm index={index} />
+      </div>
+      <div className='flex gap-2'>
+        <TypeForm index={index} />
+        <IconTypeForm index={index} />
+        <IconColorForm index={index} />
+      </div>
     </div>
   );
 };
 
-const StyledComponent = styled(Component)`
-  display: flex;
-  gap: 1.5rem;
-`;
-
-export default StyledComponent;
+export default Component;

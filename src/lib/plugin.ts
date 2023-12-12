@@ -3,15 +3,18 @@ import { PLUGIN_ID } from './global';
 import { produce } from 'immer';
 
 export const getNewCondition = (): Plugin.Condition => ({
-  field: '',
+  fieldCode: '',
   label: '',
+  type: 'icon',
+  iconType: 'info',
+  iconColor: '#9ca3af',
 });
 
 /**
  * プラグインの設定情報のひな形を返却します
  */
 const createConfig = (): Plugin.Config => ({
-  version: 1,
+  version: 2,
   conditions: [getNewCondition()],
 });
 
@@ -26,8 +29,14 @@ export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
     case undefined:
     case 1:
       return {
-        ...anyConfig,
-        version: 1,
+        version: 2,
+        conditions: anyConfig.conditions.map((condition) => ({
+          fieldCode: condition.field,
+          label: condition.label,
+          type: 'icon',
+          iconType: 'info',
+          iconColor: '#9ca3af',
+        })),
       };
     default:
       return anyConfig;

@@ -1,39 +1,20 @@
-import React, { FC, FCX } from 'react';
+import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
-import styled from '@emotion/styled';
-
-import { storageState } from '../../states/plugin';
+import { conditionsLengthState } from '../../states/plugin';
 import ConditionAdditionButton from './condition-addition-button';
 import Condition from './condition';
-import { LoaderWithLabel } from '@konomi-app/ui-react';
 
-type Props = Readonly<{
-  storage: Plugin.Config | null;
-}>;
+const Component: FC = () => {
+  const length = useRecoilValue(conditionsLengthState);
 
-const Component: FCX<Props> = ({ className, storage }) => (
-  <div {...{ className }}>
-    {!storage && <LoaderWithLabel label='設定情報を取得しています' />}
-    {!!storage && (
-      <>
-        {storage.conditions.map((condition, index) => (
-          <Condition key={index} {...{ condition, index }} />
-        ))}
-        <ConditionAdditionButton />
-      </>
-    )}
-  </div>
-);
-
-const StyledComponent = styled(Component)`
-  display: grid;
-  gap: 8px;
-`;
-
-const Container: FC = () => {
-  const storage = useRecoilValue(storageState);
-
-  return <StyledComponent {...{ storage }} />;
+  return (
+    <div className='grid gap-2'>
+      {new Array(length).fill('').map((_, index) => (
+        <Condition key={index} index={index} />
+      ))}
+      <ConditionAdditionButton />
+    </div>
+  );
 };
 
-export default Container;
+export default Component;

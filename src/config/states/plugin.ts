@@ -1,11 +1,16 @@
 import { getUpdatedStorage, restorePluginConfig } from '@/lib/plugin';
-import { RecoilState, atom, selectorFamily } from 'recoil';
+import { RecoilState, atom, selector, selectorFamily } from 'recoil';
 
 const PREFIX = 'plugin';
 
 export const storageState = atom<Plugin.Config>({
   key: `${PREFIX}storageState`,
   default: restorePluginConfig(),
+});
+
+export const conditionsLengthState = selector<number>({
+  key: `${PREFIX}conditionsLengthState`,
+  get: ({ get }) => get(storageState).conditions.length,
 });
 
 const conditionPropertyState = selectorFamily<
@@ -33,9 +38,9 @@ const conditionPropertyState = selectorFamily<
 });
 
 export const getConditionPropertyState = <T extends keyof Plugin.Condition>(params: {
-  property: T;
+  property: string;
   index: number;
 }) =>
-  conditionPropertyState([params.index, params.property]) as unknown as RecoilState<
+  conditionPropertyState([params.index, params.property as T]) as unknown as RecoilState<
     Plugin.Condition[T]
   >;

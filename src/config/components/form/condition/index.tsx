@@ -3,19 +3,17 @@ import React, { memo, FC, FCX } from 'react';
 import ConditionForm from './condition-form';
 import ConditionDeletionButton from '../condition-deletion-button';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary } from '@mui/material';
+import AccordionSummaryLabel from './accordion-summary-label';
 
-type ContainerProps = Readonly<{ condition: Plugin.Condition; index: number }>;
-type Props = ContainerProps & {};
+type Props = { index: number };
 
-const Component: FCX<Props> = ({ className, condition, index }) => (
+const Component: FC<Props> = ({ index }) => (
   <Accordion>
     <AccordionSummary>
-      設定{index + 1}: {condition.field} ➡ {condition.label}
+      <AccordionSummaryLabel index={index} />
     </AccordionSummary>
     <AccordionDetails>
-      <div className={className}>
-        <ConditionForm {...{ condition, index }} />
-      </div>
+      <ConditionForm {...{ index }} />
     </AccordionDetails>
     <AccordionActions>
       <ConditionDeletionButton {...{ index }} />
@@ -23,8 +21,4 @@ const Component: FCX<Props> = ({ className, condition, index }) => (
   </Accordion>
 );
 
-const Container: FC<ContainerProps> = memo(({ condition, index }) => {
-  return <Component {...{ condition, index }} />;
-});
-
-export default Container;
+export default memo(Component);
