@@ -1,19 +1,44 @@
+import { restoreStorage } from '@konomi-app/kintone-utilities';
+import { PLUGIN_ID } from './global';
+
+export const getNewCondition = (): Plugin.Condition => ({
+  field: '',
+  label: '',
+});
+
 /**
- * プラグインがアプリ単位で保存している設定情報を返却します
+ * プラグインの設定情報のひな形を返却します
  */
-export const restoreStorage = (id: string): Plugin.Config => {
-  /** 復元した設定情報 */
-  const config: Record<string, string> = kintone.plugin.app.getConfig(id);
+const createConfig = (): Plugin.Config => ({
+  version: 1,
+  conditions: [getNewCondition()],
+});
 
-  // 空の場合は雛形を返却します
-  if (!Object.keys(config).length) {
-    return createConfig();
+/**
+ * 古いバージョンの設定情報を新しいバージョンに変換します
+ * @param anyConfig 保存されている設定情報
+ * @returns 新しいバージョンの設定情報
+ */
+export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
+  const { version } = anyConfig;
+  switch (version) {
+    case undefined:
+    case 1:
+      return {
+        ...anyConfig,
+        version: 1,
+      };
+    default:
+      return anyConfig;
   }
+};
 
-  return Object.entries(config).reduce<any>(
-    (acc, [key, value]) => ({ ...acc, [key]: JSON.parse(value) }),
-    {}
-  );
+/**
+ * プラグインの設定情報を復元します
+ */
+export const restorePluginConfig = (): Plugin.Config => {
+  const config = restoreStorage<Plugin.AnyConfig>(PLUGIN_ID) ?? createConfig();
+  return migrateConfig(config);
 };
 
 /**
@@ -29,16 +54,3 @@ export const storeStorage = (target: Record<string, any>, callback?: () => void)
 
   kintone.plugin.app.setConfig(converted, callback);
 };
-
-/**
- * プラグインの設定情報のひな形を返却します
- */
-const createConfig = (): Plugin.Config => ({
-  version: 1,
-  conditions: [getNewCondition()],
-});
-
-export const getNewCondition = (): Plugin.Condition => ({
-  field: '',
-  label: '',
-});

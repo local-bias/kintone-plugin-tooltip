@@ -1,40 +1,41 @@
 import React, { Suspense, FC } from 'react';
 import { RecoilRoot } from 'recoil';
 import { SnackbarProvider } from 'notistack';
-
-import { restoreStorage } from '../lib/plugin';
+import { URL_BANNER, URL_PROMOTION } from '@/lib/static';
+import { LoaderWithLabel } from '@konomi-app/ui-react';
+import {
+  Notification,
+  PluginBanner,
+  PluginConfigProvider,
+  PluginContent,
+  PluginLayout,
+} from '@konomi-app/kintone-utilities-react';
 import { PluginErrorBoundary } from '@/lib/components/error-boundary';
-
 import Form from './components/form';
 import Footer from './components/footer';
-
-import { storageState } from './states/plugin';
-import { URL_PROMOTION } from '@/lib/static';
-import { LoaderWithLabel } from '@konomi-app/ui-react';
-import { PLUGIN_ID } from '@/lib/global';
+import config from '../../plugin.config.mjs';
 
 const Component: FC = () => (
-  <Suspense fallback={<p>読み込み中...</p>}>
-    <RecoilRoot
-      initializeState={({ set }) => {
-        set(storageState, restoreStorage(PLUGIN_ID));
-      }}
-    >
+  <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
+    <RecoilRoot>
       <PluginErrorBoundary>
-        <SnackbarProvider maxSnack={1}>
-          <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています' />}>
-            <Form />
-            <Footer />
-          </Suspense>
-        </SnackbarProvider>
+        <PluginConfigProvider config={config}>
+          <Notification />
+          <SnackbarProvider maxSnack={1}>
+            <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています' />}>
+              <PluginLayout singleCondition>
+                <PluginContent>
+                  <Form />
+                </PluginContent>
+                <PluginBanner url={URL_BANNER} />
+                <Footer />
+              </PluginLayout>
+            </Suspense>
+          </SnackbarProvider>
+        </PluginConfigProvider>
       </PluginErrorBoundary>
     </RecoilRoot>
-    <iframe
-      title='promotion'
-      loading='lazy'
-      src={URL_PROMOTION}
-      style={{ border: '0', width: '100%', height: '64px' }}
-    />
+    <iframe title='promotion' loading='lazy' src={URL_PROMOTION} className='border-0 w-full h-16' />
   </Suspense>
 );
 

@@ -1,13 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { getMetaFields_UNSTABLE } from '@lb-ribbit/kintone-secrets';
-import { restoreStorage } from '@/lib/plugin';
+import { restorePluginConfig } from '@/lib/plugin';
 import { css } from '@emotion/css';
 import { Tooltip } from '@mui/material';
 import { HelpIcon } from '@/lib/components/help-icon';
 import { PLUGIN_NAME } from '@/lib/static';
 import { manager } from '@/lib/event-manager';
-import { PLUGIN_ID } from '@/lib/global';
 
 let rendered = false;
 
@@ -23,7 +22,7 @@ manager.add(
       return event;
     }
 
-    const config = restoreStorage(PLUGIN_ID);
+    const config = restorePluginConfig();
     rendered = true;
 
     const metaFields = getMetaFields_UNSTABLE();
