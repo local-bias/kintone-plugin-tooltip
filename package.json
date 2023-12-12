@@ -1,6 +1,6 @@
 {
   "name": "kintone-plugin-template",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "author": "ribbit",
   "license": "MIT",
   "scripts": {
@@ -31,6 +31,7 @@
     "@lb-ribbit/kintone-secrets": "^0.3.0",
     "@mui/icons-material": "5.14.19",
     "@mui/material": "5.14.20",
+    "emoji-picker-react": "^4.5.16",
     "immer": "10.0.3",
     "luxon": "3.4.4",
     "notistack": "3.0.1",
