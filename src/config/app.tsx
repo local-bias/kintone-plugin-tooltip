@@ -8,16 +8,16 @@ import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 import Form from './components/form';
 import Footer from './components/footer';
 
-import { pluginIdState, storageState } from './states/plugin';
+import { storageState } from './states/plugin';
 import { URL_PROMOTION } from '@/lib/static';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
+import { PLUGIN_ID } from '@/lib/global';
 
-const Component: FC<{ pluginId: string }> = ({ pluginId }) => (
+const Component: FC = () => (
   <Suspense fallback={<p>読み込み中...</p>}>
     <RecoilRoot
       initializeState={({ set }) => {
-        set(pluginIdState, pluginId);
-        set(storageState, restoreStorage(pluginId));
+        set(storageState, restoreStorage(PLUGIN_ID));
       }}
     >
       <PluginErrorBoundary>
