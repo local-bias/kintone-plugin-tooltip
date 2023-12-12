@@ -26,6 +26,7 @@
     "@emotion/styled": "11.11.0",
     "@konomi-app/kintone-utilities": "^4.1.5",
     "@konomi-app/ui-react": "^1.1.1",
+    "@lb-ribbit/kintone-secrets": "^0.3.0",
     "@mui/icons-material": "5.14.19",
     "@mui/material": "5.14.20",
     "immer": "10.0.3",
