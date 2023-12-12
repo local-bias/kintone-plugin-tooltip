@@ -1,9 +1,16 @@
-/** @type {import('./src/types/plugin-config').PluginConfig} */
-module.exports = {
+//@ts-check
+const hp = 'https://konomi.app/';
+const commonCdn = 'https://kintone-plugin.konomi.app/common';
+const localhost = 'https://127.0.0.1:3940';
+
+/** @type { import('@konomi-app/kintone-utilities').PluginConfig } */
+export default {
+  id: 'ribbit-kintone-plugin-tooltip',
+  pluginReleasePageUrl: `https://ribbit.konomi.app/kintone-plugin/`,
   manifest: {
     base: {
       manifest_version: 1,
-      version: 111,
+      version: '1.2.0',
       type: 'APP',
       name: {
         en: 'Tool chip plugin',
@@ -16,10 +23,7 @@ module.exports = {
         zh: '将图标添加到特定字段并在您将鼠标悬停在该字段上时显示提示',
       },
       icon: 'image/icon.png',
-      homepage_url: {
-        ja: 'https://ribbit.konomi.app/',
-        en: 'https://ribbit.konomi.app/',
-      },
+      homepage_url: { ja: hp, en: hp, zh: hp },
       desktop: {
         js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-cdn@latest/dist/desktop.js'],
         css: [],
@@ -36,20 +40,28 @@ module.exports = {
       },
     },
     dev: {
-      desktop: { js: ['desktop.js'] },
-      mobile: { js: ['desktop.js'] },
-      config: { js: ['config.js'] },
-    },
-    prod: {
       desktop: {
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-tooltip@latest/cdn/desktop.js'],
+        js: [`${localhost}/dist/dev/desktop/index.js`],
+        css: [`${localhost}/dist/dev/desktop.css`],
       },
       mobile: {
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-tooltip@latest/cdn/desktop.js'],
+        js: [`${localhost}/dist/dev/desktop/index.js`],
+        css: [`${localhost}/dist/dev/desktop.css`],
       },
       config: {
-        js: ['https://cdn.jsdelivr.net/gh/local-bias/kintone-plugin-tooltip@latest/cdn/config.js'],
+        js: [`${localhost}/dist/dev/config/index.js`],
+        css: [`${localhost}/dist/dev/config.css`],
       },
+    },
+    prod: {
+      desktop: { js: ['desktop.js'], css: ['desktop.css'] },
+      mobile: { js: ['desktop.js'], css: ['desktop.css'] },
+      config: { js: ['config.js'], css: ['config.css'] },
+    },
+    standalone: {
+      desktop: { js: ['desktop.js'], css: ['desktop.css'] },
+      mobile: { js: ['desktop.js'], css: ['desktop.css'] },
+      config: { js: ['config.js'], css: ['config.css'] },
     },
   },
 };
