@@ -1,7 +1,4 @@
-import { Cybozu } from '../types/cybozu';
 import { kintoneAPI } from '@konomi-app/kintone-utilities';
-
-declare const cybozu: Cybozu;
 
 /** 実行されている環境がモバイル端末である場合はTrueを返却します */
 export const isMobile = (eventType?: string): boolean => {

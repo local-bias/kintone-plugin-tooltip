@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { getFields } from '@/lib/cybozu';
+import { getMetaFields_UNSTABLE } from '@lb-ribbit/kintone-secrets';
 import { restoreStorage } from '@/lib/plugin';
 import { css } from '@emotion/css';
 import { Tooltip } from '@mui/material';
@@ -26,7 +26,12 @@ manager.add(
     const config = restoreStorage(PLUGIN_ID);
     rendered = true;
 
-    const metaFields = getFields();
+    const metaFields = getMetaFields_UNSTABLE();
+
+    if (!metaFields) {
+      event.error = `kintoneのアップデートにより、${PLUGIN_NAME}は動作しなくなりました。詳細はホームページをご確認ください`;
+      return event;
+    }
 
     for (const condition of config.conditions) {
       condition.field;
