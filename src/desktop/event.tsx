@@ -54,13 +54,7 @@ manager.add(
       }
 
       target.classList.add(css`
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-
-        * {
-          line-height: 1;
-        }
+        position: relative;
       `);
 
       const root = document.createElement('span');
@@ -76,7 +70,7 @@ manager.add(
           }
           placement='top'
         >
-          <span>
+          <span className='absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center'>
             <Icon condition={condition} />
             <Emoji condition={condition} />
           </span>
