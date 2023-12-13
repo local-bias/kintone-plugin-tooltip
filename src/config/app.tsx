@@ -1,8 +1,5 @@
-import React, { Suspense, FC } from 'react';
-import { RecoilRoot } from 'recoil';
-import { SnackbarProvider } from 'notistack';
+import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 import { URL_BANNER, URL_PROMOTION } from '@/lib/static';
-import { LoaderWithLabel } from '@konomi-app/ui-react';
 import {
   Notification,
   PluginBanner,
@@ -10,11 +7,15 @@ import {
   PluginContent,
   PluginLayout,
 } from '@konomi-app/kintone-utilities-react';
-import { PluginErrorBoundary } from '@/lib/components/error-boundary';
-import Form from './components/form';
-import Footer from './components/footer';
-import config from '../../plugin.config.mjs';
+import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { ThemeProvider } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
+import React, { FC, Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
+import config from '../../plugin.config.mjs';
+import Footer from './components/footer';
+import Form from './components/form';
+import Sidebar from './components/sidebar';
 import { myTheme } from './components/theme';
 
 const Component: FC = () => (
@@ -26,7 +27,8 @@ const Component: FC = () => (
             <Notification />
             <SnackbarProvider maxSnack={1}>
               <Suspense fallback={<LoaderWithLabel label='設定情報を取得しています' />}>
-                <PluginLayout singleCondition>
+                <PluginLayout>
+                  <Sidebar />
                   <PluginContent>
                     <Form />
                   </PluginContent>

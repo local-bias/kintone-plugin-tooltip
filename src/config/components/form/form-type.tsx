@@ -1,22 +1,17 @@
-import { getConditionPropertyState } from '@/config/states/plugin';
+import { conditionTypeState } from '@/config/states/plugin';
 import { MenuItem, TextField } from '@mui/material';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-type Props = { index: number };
-
-const Component: FC<Props> = ({ index }) => {
-  const type = useRecoilValue(getConditionPropertyState({ index, property: 'type' }));
+const Component: FC = () => {
+  const type = useRecoilValue(conditionTypeState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
-      (value) => {
-        set(
-          getConditionPropertyState({ index, property: 'type' }),
-          value as Plugin.Condition['type']
-        );
+      (value: string) => {
+        set(conditionTypeState, value as Plugin.ConditionType);
       },
-    [index]
+    []
   );
 
   return (
@@ -30,7 +25,7 @@ const Component: FC<Props> = ({ index }) => {
         onChange={(e) => onChange(e.target.value)}
       >
         <MenuItem value='icon'>アイコン</MenuItem>
-        {/* <MenuItem value='emoji'>絵文字</MenuItem> */}
+        <MenuItem value='emoji'>絵文字</MenuItem>
       </TextField>
     </div>
   );

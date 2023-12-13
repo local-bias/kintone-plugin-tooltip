@@ -1,19 +1,22 @@
-import { getConditionPropertyState } from '@/config/states/plugin';
+import { conditionIconColorState, conditionTypeState } from '@/config/states/plugin';
+import {
+  PluginFormDescription,
+  PluginFormSection,
+  PluginFormTitle,
+} from '@konomi-app/kintone-utilities-react';
 import { TextField } from '@mui/material';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-type Props = { index: number };
-
-const Component: FC<Props> = ({ index }) => {
-  const value = useRecoilValue(getConditionPropertyState({ index, property: 'iconColor' }));
+const Component: FC = () => {
+  const value = useRecoilValue(conditionIconColorState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
-      (value) => {
-        set(getConditionPropertyState({ index, property: 'iconColor' }), value as string);
+      (value: string) => {
+        set(conditionIconColorState, value);
       },
-    [index]
+    []
   );
 
   return (
@@ -39,13 +42,20 @@ const Component: FC<Props> = ({ index }) => {
   );
 };
 
-const Container: FC<Props> = ({ index }) => {
-  const type = useRecoilValue(getConditionPropertyState({ index, property: 'type' }));
-
+const Container = () => {
+  const type = useRecoilValue(conditionTypeState);
   if (type !== 'icon') {
     return null;
   }
-  return <Component index={index} />;
+  return (
+    <PluginFormSection>
+      <PluginFormTitle>アイコンの色</PluginFormTitle>
+      <PluginFormDescription last>
+        アイコンの色を指定してください。色は16進数のカラーコードで指定することもできます。
+      </PluginFormDescription>
+      <Component />
+    </PluginFormSection>
+  );
 };
 
 export default Container;

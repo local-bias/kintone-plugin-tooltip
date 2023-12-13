@@ -1,26 +1,33 @@
-import { getConditionPropertyState } from '@/config/states/plugin';
+import {
+  conditionIconColorState,
+  conditionIconTypeState,
+  conditionTypeState,
+} from '@/config/states/plugin';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/solid';
+import {
+  PluginFormDescription,
+  PluginFormSection,
+  PluginFormTitle,
+} from '@konomi-app/kintone-utilities-react';
 import { MenuItem, TextField } from '@mui/material';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-type Props = { index: number };
-
-const Component: FC<Props> = ({ index }) => {
-  const type = useRecoilValue(getConditionPropertyState({ index, property: 'iconType' }));
-  const color = useRecoilValue(getConditionPropertyState({ index, property: 'iconColor' }));
+const Component: FC = () => {
+  const type = useRecoilValue(conditionIconTypeState);
+  const color = useRecoilValue(conditionIconColorState);
 
   const onChange = useRecoilCallback(
     ({ set }) =>
-      (value) => {
-        set(getConditionPropertyState({ index, property: 'iconType' }), value as Plugin.IconType);
+      (value: string) => {
+        set(conditionIconTypeState, value as Plugin.IconType);
       },
-    [index]
+    []
   );
 
   return (
@@ -63,13 +70,18 @@ const Component: FC<Props> = ({ index }) => {
   );
 };
 
-const Container: FC<Props> = ({ index }) => {
-  const type = useRecoilValue(getConditionPropertyState({ index, property: 'type' }));
-
+const Container = () => {
+  const type = useRecoilValue(conditionTypeState);
   if (type !== 'icon') {
     return null;
   }
-  return <Component index={index} />;
+  return (
+    <PluginFormSection>
+      <PluginFormTitle>アイコンの種類</PluginFormTitle>
+      <PluginFormDescription last>アイコンの種類を指定してください。</PluginFormDescription>
+      <Component />
+    </PluginFormSection>
+  );
 };
 
 export default Container;

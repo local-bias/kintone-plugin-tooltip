@@ -8,12 +8,13 @@ export const getNewCondition = (): Plugin.Condition => ({
   type: 'icon',
   iconType: 'info',
   iconColor: '#9ca3af',
+  emoji: '😀',
 });
 
 /**
  * プラグインの設定情報のひな形を返却します
  */
-const createConfig = (): Plugin.Config => ({
+export const createConfig = (): Plugin.Config => ({
   version: 2,
   conditions: [getNewCondition()],
 });
@@ -36,6 +37,7 @@ export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
           type: 'icon',
           iconType: 'info',
           iconColor: '#9ca3af',
+          emoji: '😀',
         })),
       };
     default:

@@ -8,28 +8,51 @@ export const storageState = atom<Plugin.Config>({
   default: restorePluginConfig(),
 });
 
+export const loadingState = atom<boolean>({
+  key: `${PREFIX}loadingState`,
+  default: false,
+});
+
+export const tabIndexState = atom<number>({
+  key: `${PREFIX}tabIndexState`,
+  default: 0,
+});
+
+export const conditionsState = selector<Plugin.Condition[]>({
+  key: `${PREFIX}conditionsState`,
+  get: ({ get }) => {
+    const storage = get(storageState);
+    return storage?.conditions ?? [];
+  },
+});
+
 export const conditionsLengthState = selector<number>({
   key: `${PREFIX}conditionsLengthState`,
-  get: ({ get }) => get(storageState).conditions.length,
+  get: ({ get }) => {
+    const conditions = get(conditionsState);
+    return conditions.length;
+  },
 });
 
 const conditionPropertyState = selectorFamily<
   Plugin.Condition[keyof Plugin.Condition],
-  [number, keyof Plugin.Condition]
+  keyof Plugin.Condition
 >({
   key: `${PREFIX}conditionPropertyState`,
   get:
-    ([index, key]) =>
+    (key) =>
     ({ get }) => {
+      const conditionIndex = get(tabIndexState);
       const storage = get(storageState);
-      return storage.conditions[index][key];
+      return storage.conditions[conditionIndex][key];
     },
   set:
-    ([index, key]) =>
-    ({ set }, newValue) => {
+    (key) =>
+    ({ get, set }, newValue) => {
+      const conditionIndex = get(tabIndexState);
       set(storageState, (current) =>
         getUpdatedStorage(current, {
-          conditionIndex: index,
+          conditionIndex,
           key,
           value: newValue as Plugin.Condition[keyof Plugin.Condition],
         })
@@ -37,10 +60,12 @@ const conditionPropertyState = selectorFamily<
     },
 });
 
-export const getConditionPropertyState = <T extends keyof Plugin.Condition>(params: {
-  property: string;
-  index: number;
-}) =>
-  conditionPropertyState([params.index, params.property as T]) as unknown as RecoilState<
-    Plugin.Condition[T]
-  >;
+export const getConditionPropertyState = <T extends keyof Plugin.Condition>(property: T) =>
+  conditionPropertyState(property) as unknown as RecoilState<Plugin.Condition[T]>;
+
+export const conditionFieldCodeState = getConditionPropertyState('fieldCode');
+export const conditionLabelState = getConditionPropertyState('label');
+export const conditionTypeState = getConditionPropertyState('type');
+export const conditionIconTypeState = getConditionPropertyState('iconType');
+export const conditionIconColorState = getConditionPropertyState('iconColor');
+export const conditionEmojiState = getConditionPropertyState('emoji');
