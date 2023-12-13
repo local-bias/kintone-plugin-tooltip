@@ -4,16 +4,10 @@ import { getMetaFields_UNSTABLE } from '@lb-ribbit/kintone-secrets';
 import { restorePluginConfig } from '@/lib/plugin';
 import { css } from '@emotion/css';
 import { Tooltip } from '@mui/material';
-import { HelpIcon } from '@/lib/components/help-icon';
 import { PLUGIN_NAME } from '@/lib/static';
 import { manager } from '@/lib/event-manager';
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/24/solid';
 import Icon from './components/icon';
+import Emoji from './components/emoji';
 
 let rendered = false;
 
@@ -84,6 +78,7 @@ manager.add(
         >
           <span>
             <Icon condition={condition} />
+            <Emoji condition={condition} />
           </span>
         </Tooltip>
       );
