@@ -1,8 +1,4 @@
-import {
-  conditionEmojiState,
-  conditionIconTypeState,
-  conditionTypeState,
-} from '@/config/states/plugin';
+import { conditionEmojiState, conditionTypeState } from '@/config/states/plugin';
 import {
   PluginFormDescription,
   PluginFormSection,
@@ -10,8 +6,9 @@ import {
 } from '@konomi-app/kintone-utilities-react';
 import React, { FC } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import EmojiPicker from 'emoji-picker-react';
-import { TextField } from '@mui/material';
+import data from '@emoji-mart/data';
+import i18n from '@emoji-mart/data/i18n/ja.json';
+import Picker from '@emoji-mart/react';
 
 const Component: FC = () => {
   const emoji = useRecoilValue(conditionEmojiState);
@@ -32,7 +29,11 @@ const Component: FC = () => {
           {emoji}
         </div>
       </div>
-      <EmojiPicker onEmojiClick={(emoji) => onChange(emoji.emoji)} />
+      <Picker
+        data={data}
+        onEmojiSelect={({ native }: { native: string }) => onChange(native)}
+        i18n={i18n}
+      />
     </div>
   );
 };

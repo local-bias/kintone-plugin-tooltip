@@ -21,6 +21,8 @@
     "path": false
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/css": "^11.11.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "11.11.0",
@@ -31,7 +33,7 @@
     "@lb-ribbit/kintone-secrets": "^0.3.0",
     "@mui/icons-material": "5.14.19",
     "@mui/material": "5.14.20",
-    "emoji-picker-react": "^4.5.16",
+    "emoji-mart": "^5.5.2",
     "immer": "10.0.3",
     "luxon": "3.4.4",
     "notistack": "3.0.1",
