@@ -4,6 +4,7 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { PluginConditionTabs } from '@konomi-app/kintone-utilities-react';
 import { conditionsLengthState, tabIndexState } from '../../states/plugin';
 import TabLabel from './tab-label';
+import TabIcon from './tab-icon';
 
 const Component: FC = () => {
   const tabIndex = useRecoilValue(tabIndexState);
@@ -20,7 +21,12 @@ const Component: FC = () => {
   return (
     <PluginConditionTabs tabIndex={tabIndex} onChange={onTabChange}>
       {new Array(length).fill('').map((_, i) => (
-        <Tab label={<TabLabel index={i} />} key={i} />
+        <Tab
+          icon={<TabIcon index={i} />}
+          label={<TabLabel index={i} />}
+          iconPosition='start'
+          key={i}
+        />
       ))}
     </PluginConditionTabs>
   );
