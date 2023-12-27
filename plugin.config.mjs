@@ -10,7 +10,7 @@ export default {
   manifest: {
     base: {
       manifest_version: 1,
-      version: '2.0.0',
+      version: '2.0.1',
       type: 'APP',
       name: {
         en: 'Tool chip plugin',
