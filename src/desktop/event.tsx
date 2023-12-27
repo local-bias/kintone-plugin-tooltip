@@ -28,6 +28,8 @@ manager.add(
 
     const metaFields = getMetaFields_UNSTABLE();
 
+    process.env.NODE_ENV === 'development' && console.log({ metaFields });
+
     if (!metaFields) {
       event.error = `kintoneのアップデートにより、${PLUGIN_NAME}は動作しなくなりました。詳細はホームページをご確認ください`;
       return event;
@@ -44,8 +46,8 @@ manager.add(
       }
 
       const target =
-        document.querySelector(`.label-${metaField.id} > div`) ||
-        document.querySelector(`.label-${metaField.id}`);
+        document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia) > div`) ||
+        document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia)`);
       if (!target) {
         console.error(
           `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
