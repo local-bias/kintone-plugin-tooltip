@@ -39,9 +39,10 @@ manager.add(
       const { fieldCode, type } = condition;
       const metaField = metaFields.find((field) => field.var === fieldCode);
       if (!metaField) {
-        console.error(
-          `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
-        );
+        process.env.NODE_ENV === 'development' &&
+          console.error(
+            `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
+          );
         continue;
       }
 
@@ -49,9 +50,10 @@ manager.add(
         document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia) > div`) ||
         document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia)`);
       if (!target) {
-        console.error(
-          `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
-        );
+        process.env.NODE_ENV === 'development' &&
+          console.error(
+            `[${PLUGIN_NAME}] 設定したフィールドが見つからなかったため、処理を中断しました`
+          );
         continue;
       }
 
