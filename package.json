@@ -5,14 +5,9 @@
   "license": "MIT",
   "scripts": {
     "init": "plugin init && plugin genkey",
-    "build": "concurrently \"npm:build:*\" && plugin zip",
-    "build:js": "plugin build",
-    "build:css": "tailwindcss -i ./src/styles/global.css -o ./.plugin/contents/config.css -c ./tailwind.config.config.mjs --minify && tailwindcss -i ./src/styles/global.css -o ./.plugin/contents/desktop.css -c ./tailwind.config.desktop.mjs --minify",
-    "standalone": "concurrently \"npm:build:*\" && plugin zip --env standalone",
-    "dev": "concurrently \"npm:dev:*\"",
-    "dev:plugin": "plugin dev",
-    "dev:css-config": "tailwindcss -i ./src/styles/global.css -o ./.plugin/dev/config.css -c ./tailwind.config.config.mjs -w",
-    "dev:css-desktop": "tailwindcss -i ./src/styles/global.css -o ./.plugin/dev/desktop.css -c ./tailwind.config.desktop.mjs -w",
+    "build": "plugin build && plugin zip",
+    "standalone": "plugin build && plugin zip --env standalone",
+    "dev": "plugin dev",
     "lint": "eslint ./src --cache --ext .js,.ts,.tsx"
   },
   "browser": {
@@ -43,24 +38,12 @@
   "devDependencies": {
     "@kintone/dts-gen": "8.0.11",
     "@kintone/plugin-uploader": "9.1.1",
-    "@kintone/rest-api-client": "5.5.1",
     "@konomi-app/k2": "*",
     "@types/luxon": "3.4.2",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
-    "@typescript-eslint/eslint-plugin": "7.12.0",
-    "@typescript-eslint/parser": "7.12.0",
     "concurrently": "^8.2.2",
     "dotenv": "16.4.5",
-    "eslint": "8",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard-with-typescript": "^43.0.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^17.8.1",
-    "eslint-plugin-promise": "^6.2.0",
-    "eslint-plugin-react": "^7.34.2",
     "tailwindcss": "^3.4.4",
     "typescript": "5.4.5"
   }
