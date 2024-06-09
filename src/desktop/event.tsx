@@ -1,13 +1,13 @@
+import { manager } from '@/lib/event-manager';
+import { restorePluginConfig } from '@/lib/plugin';
+import { PLUGIN_NAME } from '@/lib/static';
+import { css } from '@emotion/css';
+import { getMetaFields_UNSTABLE } from '@konomi-app/kintone-utilities';
+import { Tooltip } from '@mui/material';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { getMetaFields_UNSTABLE } from '@lb-ribbit/kintone-secrets';
-import { restorePluginConfig } from '@/lib/plugin';
-import { css } from '@emotion/css';
-import { Tooltip } from '@mui/material';
-import { PLUGIN_NAME } from '@/lib/static';
-import { manager } from '@/lib/event-manager';
-import Icon from './components/icon';
 import Emoji from './components/emoji';
+import Icon from './components/icon';
 
 let rendered = false;
 
