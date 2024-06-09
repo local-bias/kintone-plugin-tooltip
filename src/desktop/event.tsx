@@ -36,7 +36,7 @@ manager.add(
     }
 
     for (const condition of config.conditions) {
-      const { fieldCode, type } = condition;
+      const { fieldCode } = condition;
       const metaField = metaFields.find((field) => field.var === fieldCode);
       if (!metaField) {
         process.env.NODE_ENV === 'development' &&

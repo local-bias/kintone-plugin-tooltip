@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useRecoilCallback, useSetRecoilState } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { produce } from 'immer';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';

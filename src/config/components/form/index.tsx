@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { useRecoilValue } from 'recoil';
-import { conditionLabelState, conditionsLengthState } from '../../states/plugin';
+import { conditionLabelState } from '../../states/plugin';
 import {
   PluginFormDescription,
   PluginFormSection,

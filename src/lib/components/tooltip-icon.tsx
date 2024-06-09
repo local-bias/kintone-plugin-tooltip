@@ -4,7 +4,7 @@ import {
   ExclamationTriangleIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/solid';
-import React, { FC, memo } from 'react';
+import React, { FC } from 'react';
 
 type Props = { iconType: Plugin.IconType; iconColor: string };
 
