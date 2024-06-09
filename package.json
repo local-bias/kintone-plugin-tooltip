@@ -7,8 +7,7 @@
     "init": "plugin init && plugin genkey",
     "build": "plugin build && plugin zip",
     "standalone": "plugin build && plugin zip --env standalone",
-    "dev": "plugin dev",
-    "lint": "eslint ./src --cache --ext .js,.ts,.tsx"
+    "dev": "plugin dev"
   },
   "browser": {
     "path": false
