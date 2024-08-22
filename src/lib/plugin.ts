@@ -12,7 +12,7 @@ export const getNewCondition = (): Plugin.Condition => ({
   iconColor: '#9ca3af',
   emoji: '😀',
   targetEvents: ['create', 'edit', 'index', 'detail'],
-  backgroundColor: '#374151',
+  backgroundColor: '#4b5563',
   foregroundColor: '#f9fafb',
 });
 
@@ -59,7 +59,7 @@ export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
         conditions: anyConfig.conditions.map((condition) => ({
           ...condition,
           targetEvents: ['create', 'edit', 'index', 'detail'],
-          backgroundColor: '#374151',
+          backgroundColor: '#4b5563',
           foregroundColor: '#f9fafb',
         })),
       });
