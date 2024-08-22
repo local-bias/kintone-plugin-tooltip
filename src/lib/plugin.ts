@@ -11,13 +11,16 @@ export const getNewCondition = (): Plugin.Condition => ({
   iconType: 'info',
   iconColor: '#9ca3af',
   emoji: '😀',
+  targetEvents: ['create', 'edit', 'index', 'detail'],
+  backgroundColor: '#374151',
+  foregroundColor: '#f9fafb',
 });
 
 /**
  * プラグインの設定情報のひな形を返却します
  */
 export const createConfig = (): Plugin.Config => ({
-  version: 3,
+  version: 4,
   conditions: [getNewCondition()],
 });
 
@@ -51,6 +54,16 @@ export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
         })),
       });
     case 3:
+      return migrateConfig({
+        version: 4,
+        conditions: anyConfig.conditions.map((condition) => ({
+          ...condition,
+          targetEvents: ['create', 'edit', 'index', 'detail'],
+          backgroundColor: '#374151',
+          foregroundColor: '#f9fafb',
+        })),
+      });
+    case 4:
     default:
       return anyConfig;
   }
