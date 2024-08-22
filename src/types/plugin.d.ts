@@ -1,6 +1,6 @@
 declare namespace Plugin {
   /** 🔌 プラグインがアプリ単位で保存する設定情報 */
-  type Config = ConfigV2;
+  type Config = ConfigV3;
 
   /** 🔌 プラグインの詳細設定 */
   type Condition = Config['conditions'][number];
@@ -9,14 +9,11 @@ declare namespace Plugin {
   type IconType = Condition['iconType'];
 
   /** 🔌 過去全てのバージョンを含むプラグインの設定情報 */
-  type AnyConfig = ConfigV1 | ConfigV2;
+  type AnyConfig = ConfigV1 | ConfigV2 | ConfigV3;
 
-  type ConfigV1 = {
-    version: 1;
-    conditions: {
-      field: string;
-      label: string;
-    }[];
+  type ConfigV3 = {
+    version: 3;
+    conditions: (ConfigV2['conditions'][number] & { id: string })[];
   };
 
   type ConfigV2 = {
@@ -28,6 +25,14 @@ declare namespace Plugin {
       emoji: string;
       iconType: 'info' | 'warning' | 'error' | 'success';
       iconColor: string;
+    }[];
+  };
+
+  type ConfigV1 = {
+    version: 1;
+    conditions: {
+      field: string;
+      label: string;
     }[];
   };
 }
