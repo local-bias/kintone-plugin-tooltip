@@ -13,17 +13,9 @@ export const loadingState = atom<boolean>({
   default: false,
 });
 
-export const selectedConditionIdState = atom<string | null>({
-  key: `${PREFIX}selectedConditionIdState`,
-  default: null,
-});
-
 export const conditionsState = selector<Plugin.Condition[]>({
   key: `${PREFIX}conditionsState`,
-  get: ({ get }) => {
-    const storage = get(storageState);
-    return storage?.conditions ?? [];
-  },
+  get: ({ get }) => get(storageState).conditions,
   set: ({ set }, newValue) => {
     if (newValue instanceof DefaultValue) {
       return;
@@ -32,6 +24,14 @@ export const conditionsState = selector<Plugin.Condition[]>({
       return { ...current, conditions: newValue };
     });
   },
+});
+
+export const selectedConditionIdState = atom<string>({
+  key: `${PREFIX}selectedConditionIdState`,
+  default: selector<string>({
+    key: `${PREFIX}selectedConditionIdState/default`,
+    get: ({ get }) => get(conditionsState)[0].id,
+  }),
 });
 
 export const selectedConditionState = selector<Plugin.Condition>({
