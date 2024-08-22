@@ -3,11 +3,12 @@ import { restorePluginConfig } from '@/lib/plugin';
 import { PLUGIN_NAME } from '@/lib/static';
 import { css } from '@emotion/css';
 import { getMetaFields_UNSTABLE } from '@konomi-app/kintone-utilities';
-import { Tooltip } from '@mui/material';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Emoji from './components/emoji';
 import Icon from './components/icon';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { sanitize } from 'dompurify';
 
 let rendered = false;
 
@@ -37,7 +38,7 @@ manager.add(
 
     for (const condition of config.conditions) {
       const { fieldCode } = condition;
-      const metaField = metaFields.find((field) => field.var === fieldCode);
+      const metaField = metaFields.find((field) => field && field.var === fieldCode);
       if (!metaField) {
         process.env.NODE_ENV === 'development' &&
           console.error(
@@ -64,21 +65,24 @@ manager.add(
       const root = document.createElement('span');
       target.append(root);
       createRoot(root).render(
-        <Tooltip
-          title={
-            <>
-              {condition.label.split(/\n/).map((line, i) => (
-                <div key={i}>{line || '　'}</div>
-              ))}
-            </>
-          }
-          placement='top'
-        >
-          <span className='absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center'>
-            <Icon condition={condition} />
-            <Emoji condition={condition} />
+        <TooltipProvider>
+          <span className='🐸'>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger className='absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center'>
+                <Icon condition={condition} />
+                <Emoji condition={condition} />
+              </TooltipTrigger>
+              <TooltipContent
+                style={{
+                  backgroundColor: condition.backgroundColor,
+                  color: condition.foregroundColor,
+                }}
+              >
+                <div dangerouslySetInnerHTML={{ __html: sanitize(condition.label) }} />
+              </TooltipContent>
+            </Tooltip>
           </span>
-        </Tooltip>
+        </TooltipProvider>
       );
     }
 
