@@ -1,5 +1,5 @@
 import { getUpdatedStorage, restorePluginConfig } from '@/lib/plugin';
-import { RecoilState, atom, selector, selectorFamily } from 'recoil';
+import { DefaultValue, RecoilState, atom, selector, selectorFamily } from 'recoil';
 
 const PREFIX = 'plugin';
 
@@ -13,9 +13,9 @@ export const loadingState = atom<boolean>({
   default: false,
 });
 
-export const tabIndexState = atom<number>({
-  key: `${PREFIX}tabIndexState`,
-  default: 0,
+export const selectedConditionIdState = atom<string | null>({
+  key: `${PREFIX}selectedConditionIdState`,
+  default: null,
 });
 
 export const conditionsState = selector<Plugin.Condition[]>({
@@ -23,6 +23,26 @@ export const conditionsState = selector<Plugin.Condition[]>({
   get: ({ get }) => {
     const storage = get(storageState);
     return storage?.conditions ?? [];
+  },
+  set: ({ set }, newValue) => {
+    if (newValue instanceof DefaultValue) {
+      return;
+    }
+    set(storageState, (current) => {
+      return { ...current, conditions: newValue };
+    });
+  },
+});
+
+export const selectedConditionState = selector<Plugin.Condition>({
+  key: `${PREFIX}selectedConditionState`,
+  get: ({ get }) => {
+    const storage = get(storageState);
+    const selectedConditionId = get(selectedConditionIdState);
+    return (
+      storage.conditions.find((condition) => condition.id === selectedConditionId) ??
+      storage.conditions[0]
+    );
   },
 });
 
@@ -42,21 +62,21 @@ const conditionPropertyState = selectorFamily<
   get:
     (key) =>
     ({ get }) => {
-      const conditionIndex = get(tabIndexState);
-      const storage = get(storageState);
-      return storage.conditions[conditionIndex][key];
+      return get(selectedConditionState)[key];
     },
   set:
     (key) =>
     ({ get, set }, newValue) => {
-      const conditionIndex = get(tabIndexState);
-      set(storageState, (current) =>
-        getUpdatedStorage(current, {
-          conditionIndex,
-          key,
-          value: newValue as Plugin.Condition[keyof Plugin.Condition],
-        })
-      );
+      const conditionId = get(selectedConditionState).id;
+      set(storageState, (current) => {
+        if (newValue instanceof DefaultValue) {
+          return current;
+        }
+        const conditionIndex = current.conditions.findIndex(
+          (condition) => condition.id === conditionId
+        );
+        return getUpdatedStorage(current, { conditionIndex, key, value: newValue });
+      });
     },
 });
 
