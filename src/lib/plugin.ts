@@ -58,6 +58,7 @@ export const migrateConfig = (anyConfig: Plugin.AnyConfig): Plugin.Config => {
         version: 4,
         conditions: anyConfig.conditions.map((condition) => ({
           ...condition,
+          label: condition.label.split(/\n/).join('<br>'),
           targetEvents: ['create', 'edit', 'index', 'detail'],
           backgroundColor: '#4b5563',
           foregroundColor: '#f9fafb',
