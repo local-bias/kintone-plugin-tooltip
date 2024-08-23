@@ -14,6 +14,7 @@ import IconColorForm from './form-icon-color';
 import EmojiForm from './form-emoji';
 import { RecoilColorPicker } from '@/lib/components/recoil-color-picker';
 import Preview from './preview';
+import TargetEventsForm from './form-target-events';
 
 const Component: FC = () => {
   return (
@@ -40,6 +41,14 @@ const Component: FC = () => {
           rows={4}
           fullWidth
         />
+      </PluginFormSection>
+      <PluginFormSection>
+        <PluginFormTitle>対象画面</PluginFormTitle>
+        <PluginFormDescription>ツールチップを表示する画面を制御します</PluginFormDescription>
+        <PluginFormDescription last>
+          チェックを外した画面では、ツールチップは表示されません。
+        </PluginFormDescription>
+        <TargetEventsForm />
       </PluginFormSection>
       <PluginFormSection>
         <PluginFormTitle>アイコンタイプ</PluginFormTitle>
