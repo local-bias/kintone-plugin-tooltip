@@ -51,9 +51,19 @@ manager.add(
         continue;
       }
 
+      const commonSelector = `.label-${metaField.id}:not(.subtable-label-gaia)`;
+      /** レコード一覧画面のラベルの最小セレクター */
+      const indexLabelSelector = `${commonSelector} .recordlist-header-label-gaia`;
+      /** レコード詳細画面のラベルの最小セレクター */
+      const detailLabelSelector = `${commonSelector} .control-label-text-gaia`;
+      /** モバイル版のレコード一覧画面のラベルの最小セレクター */
+      const mobileIndexLabelSelector = `${commonSelector} .gaia-mobile-v2-app-index-recordlist-table-headercell-label`;
       const target =
-        document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia) > div`) ||
-        document.querySelector(`.label-${metaField.id}:not(.subtable-label-gaia)`);
+        document.querySelector(indexLabelSelector) ||
+        document.querySelector(detailLabelSelector) ||
+        document.querySelector(mobileIndexLabelSelector) ||
+        document.querySelector(`${commonSelector} > div`) ||
+        document.querySelector(`${commonSelector}`);
       if (!target) {
         process.env.NODE_ENV === 'development' &&
           console.error(
@@ -63,7 +73,8 @@ manager.add(
       }
 
       target.classList.add(css`
-        position: relative;
+        padding-right: 36px !important;
+        position: relative !important;
       `);
 
       const root = document.createElement('span');
@@ -72,7 +83,7 @@ manager.add(
         <TooltipProvider>
           <span className='🐸'>
             <Tooltip delayDuration={0}>
-              <TooltipTrigger className='absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center'>
+              <TooltipTrigger className='absolute right-2 p-0 top-1/2 -translate-y-1/2 grid place-items-center'>
                 <Icon condition={condition} />
                 <Emoji condition={condition} />
               </TooltipTrigger>
