@@ -10,7 +10,7 @@ const Icon: FC<Props> = ({ index }) => {
   const { type, emoji, iconType, iconColor } = conditions[index];
 
   if (type === 'emoji') {
-    return <span className='text-lg'>{emoji}</span>;
+    return <span className='text-xl'>{emoji}</span>;
   }
   return <TooltipIcon iconType={iconType} iconColor={iconColor} />;
 };
