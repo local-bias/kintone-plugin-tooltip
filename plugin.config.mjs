@@ -23,7 +23,7 @@ export default /** @type { const } */ ({
   manifest: {
     base: {
       manifest_version: 1,
-      version: '3.2.0',
+      version: '3.3.0',
       type: 'APP',
       name: {
         en: 'Tool chip plugin',
