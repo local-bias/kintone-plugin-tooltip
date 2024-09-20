@@ -10,7 +10,8 @@ const Label: FC<Props> = ({ index }) => {
 
   return (
     <>
-      設定{index + 1}: {fieldCode}
+      <div className='text-[11px] leading-4 text-gray-400'>設定{index + 1}</div>
+      <div className='text-sm text-gray-600'>{`${fieldCode || '未設定'}`}</div>
     </>
   );
 };

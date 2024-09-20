@@ -58,7 +58,7 @@ const SidebarTab: FC<{ condition: Plugin.Condition; index: number }> = ({ condit
         role='button'
         tabIndex={0}
         onClick={onClick}
-        className='p-4 pl-0 bg-transparent border-0 cursor-pointer outline-none text-left text-gray-600 text-sm grid grid-cols-[auto_1fr] items-center'
+        className='py-3 px-4 pl-0 bg-transparent border-0 cursor-pointer outline-none text-left text-gray-600 text-sm grid grid-cols-[auto_1fr] items-center'
       >
         <TabIcon index={index} />
         <TabLabel index={index} />
