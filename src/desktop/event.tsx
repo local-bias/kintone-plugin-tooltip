@@ -5,10 +5,7 @@ import { css } from '@emotion/css';
 import { getMetaFields_UNSTABLE } from '@konomi-app/kintone-utilities';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Emoji from './components/emoji';
-import Icon from './components/icon';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { sanitize } from 'dompurify';
+import TooltipContainer from './components';
 
 let rendered = false;
 
@@ -79,26 +76,7 @@ manager.add(
 
       const root = document.createElement('span');
       target.append(root);
-      createRoot(root).render(
-        <TooltipProvider>
-          <span className='🐸'>
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger className='absolute right-2 p-0 top-1/2 -translate-y-1/2 grid place-items-center'>
-                <Icon condition={condition} />
-                <Emoji condition={condition} />
-              </TooltipTrigger>
-              <TooltipContent
-                style={{
-                  backgroundColor: condition.backgroundColor,
-                  color: condition.foregroundColor,
-                }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: sanitize(condition.label) }} />
-              </TooltipContent>
-            </Tooltip>
-          </span>
-        </TooltipProvider>
-      );
+      createRoot(root).render(<TooltipContainer condition={condition} />);
     }
 
     return event;
