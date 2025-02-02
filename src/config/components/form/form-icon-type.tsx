@@ -1,7 +1,7 @@
 import {
-  conditionIconColorState,
-  conditionIconTypeState,
-  conditionTypeState,
+  conditionIconColorAtom,
+  conditionIconTypeAtom,
+  conditionTypeAtom,
 } from '@/config/states/plugin';
 import {
   CheckCircleIcon,
@@ -15,20 +15,16 @@ import {
   PluginFormTitle,
 } from '@konomi-app/kintone-utilities-react';
 import { MenuItem, TextField } from '@mui/material';
-import React, { FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtom, useAtomValue } from 'jotai';
+import { FC } from 'react';
 
 const Component: FC = () => {
-  const type = useRecoilValue(conditionIconTypeState);
-  const color = useRecoilValue(conditionIconColorState);
+  const [type, setType] = useAtom(conditionIconTypeAtom);
+  const color = useAtomValue(conditionIconColorAtom);
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: string) => {
-        set(conditionIconTypeState, value as Plugin.IconType);
-      },
-    []
-  );
+  const onChange = (value: Plugin.IconType) => {
+    setType(value);
+  };
 
   return (
     <div>
@@ -39,7 +35,7 @@ const Component: FC = () => {
         select
         label='アイコンタイプ'
         value={type}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value as Plugin.IconType)}
       >
         <MenuItem value='info'>
           <div className='flex items-center gap-4'>
@@ -71,7 +67,7 @@ const Component: FC = () => {
 };
 
 const Container = () => {
-  const type = useRecoilValue(conditionTypeState);
+  const type = useAtomValue(conditionTypeAtom);
   if (type !== 'icon') {
     return null;
   }
