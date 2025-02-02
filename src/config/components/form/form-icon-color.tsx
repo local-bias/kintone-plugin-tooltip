@@ -1,15 +1,14 @@
-import { conditionIconColorState, conditionTypeState } from '@/config/states/plugin';
-import { RecoilColorPicker } from '@/lib/components/recoil-color-picker';
+import { conditionIconColorAtom, conditionTypeAtom } from '@/config/states/plugin';
+import { JotaiColorPicker } from '@/lib/components/jotai-color-picker';
 import {
   PluginFormDescription,
   PluginFormSection,
   PluginFormTitle,
 } from '@konomi-app/kintone-utilities-react';
-import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 
 const Container = () => {
-  const type = useRecoilValue(conditionTypeState);
+  const type = useAtomValue(conditionTypeAtom);
   if (type !== 'icon') {
     return null;
   }
@@ -19,8 +18,8 @@ const Container = () => {
       <PluginFormDescription last>
         アイコンの色を指定してください。色は16進数のカラーコードで指定することもできます。
       </PluginFormDescription>
-      <RecoilColorPicker
-        state={conditionIconColorState}
+      <JotaiColorPicker
+        atom={conditionIconColorAtom}
         label='アイコンの色'
         variant='outlined'
         color='primary'
