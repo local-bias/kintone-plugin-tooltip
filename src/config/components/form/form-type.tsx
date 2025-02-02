@@ -1,17 +1,16 @@
-import { conditionTypeState } from '@/config/states/plugin';
+import { conditionTypeAtom } from '@/config/states/plugin';
 import { MenuItem, TextField } from '@mui/material';
-import React, { FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, useCallback } from 'react';
 
 const Component: FC = () => {
-  const type = useRecoilValue(conditionTypeState);
+  const type = useAtomValue(conditionTypeAtom);
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: string) => {
-        set(conditionTypeState, value as Plugin.ConditionType);
-      },
-    []
+  const onChange = useAtomCallback(
+    useCallback((_, set, value: string) => {
+      set(conditionTypeAtom, value as Plugin.ConditionType);
+    }, [])
   );
 
   return (
