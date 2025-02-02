@@ -1,24 +1,23 @@
-import { conditionEmojiState, conditionTypeState } from '@/config/states/plugin';
+import { conditionEmojiAtom, conditionTypeAtom } from '@/config/states/plugin';
+import data from '@emoji-mart/data';
+import i18n from '@emoji-mart/data/i18n/ja.json';
+import Picker from '@emoji-mart/react';
 import {
   PluginFormDescription,
   PluginFormSection,
   PluginFormTitle,
 } from '@konomi-app/kintone-utilities-react';
-import React, { FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import data from '@emoji-mart/data';
-import i18n from '@emoji-mart/data/i18n/ja.json';
-import Picker from '@emoji-mart/react';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, useCallback } from 'react';
 
 const Component: FC = () => {
-  const emoji = useRecoilValue(conditionEmojiState);
+  const emoji = useAtomValue(conditionEmojiAtom);
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: string) => {
-        set(conditionEmojiState, value);
-      },
-    []
+  const onChange = useAtomCallback(
+    useCallback((_, set, value: string) => {
+      set(conditionEmojiAtom, value);
+    }, [])
   );
 
   return (
@@ -39,7 +38,7 @@ const Component: FC = () => {
 };
 
 const Container = () => {
-  const type = useRecoilValue(conditionTypeState);
+  const type = useAtomValue(conditionTypeAtom);
   if (type !== 'emoji') {
     return null;
   }
