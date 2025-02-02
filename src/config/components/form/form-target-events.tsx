@@ -1,7 +1,8 @@
-import { getConditionPropertyState } from '@/config/states/plugin';
+import { getConditionPropertyAtom } from '@/config/states/plugin';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import React, { FC } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, useCallback } from 'react';
 
 type OptionValue = Plugin.Condition['targetEvents'][number];
 
@@ -24,22 +25,20 @@ const OPTIONS: { value: OptionValue; label: string }[] = [
   },
 ];
 
-const state = getConditionPropertyState('targetEvents');
+const state = getConditionPropertyAtom('targetEvents');
 
 const Component: FC = () => {
-  const value = useRecoilValue(state);
+  const value = useAtomValue(state);
 
-  const onChange = useRecoilCallback(
-    ({ set }) =>
-      (value: OptionValue, checked: boolean) => {
-        set(state, (prev) => {
-          if (checked) {
-            return [...prev, value];
-          }
-          return prev.filter((v) => v !== value);
-        });
-      },
-    []
+  const onChange = useAtomCallback(
+    useCallback((_, set, value: OptionValue, checked: boolean) => {
+      set(state, (prev) => {
+        if (checked) {
+          return [...prev, value];
+        }
+        return prev.filter((v) => v !== value);
+      });
+    }, [])
   );
 
   return (
