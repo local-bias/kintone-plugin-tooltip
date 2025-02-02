@@ -1,20 +1,20 @@
-import React, { FC } from 'react';
-import { conditionLabelState, getConditionPropertyState } from '../../states/plugin';
+import { JotaiColorPicker } from '@/lib/components/jotai-color-picker';
+import { JotaiText } from '@konomi-app/kintone-utilities-jotai';
 import {
   PluginFormDescription,
   PluginFormSection,
   PluginFormTitle,
-  RecoilText,
 } from '@konomi-app/kintone-utilities-react';
-import FieldCodeForm from './form-fieldcode';
+import React, { FC } from 'react';
+import { conditionLabelAtom, getConditionPropertyAtom } from '../../states/plugin';
 import DeleteButton from './condition-delete-button';
-import TypeForm from './form-type';
-import IconTypeForm from './form-icon-type';
-import IconColorForm from './form-icon-color';
 import EmojiForm from './form-emoji';
-import { RecoilColorPicker } from '@/lib/components/recoil-color-picker';
-import Preview from './preview';
+import FieldCodeForm from './form-fieldcode';
+import IconColorForm from './form-icon-color';
+import IconTypeForm from './form-icon-type';
 import TargetEventsForm from './form-target-events';
+import TypeForm from './form-type';
+import Preview from './preview';
 
 const Component: FC = () => {
   return (
@@ -34,12 +34,13 @@ const Component: FC = () => {
         <PluginFormDescription last>
           HTMLによる記述が可能です。例えば、リンクや画像を埋め込むことができます。
         </PluginFormDescription>
-        <RecoilText
-          state={conditionLabelState}
+        <JotaiText
+          atom={conditionLabelAtom}
           label='表示するヒント'
           multiline
-          rows={4}
+          rows={6}
           fullWidth
+          sx={{ width: '100%' }}
         />
       </PluginFormSection>
       <PluginFormSection>
@@ -68,8 +69,8 @@ const Component: FC = () => {
         <PluginFormDescription last>
           アイコンをフォーカスした際に表示されるツールチップの背景色を設定してください。
         </PluginFormDescription>
-        <RecoilColorPicker
-          state={getConditionPropertyState('backgroundColor')}
+        <JotaiColorPicker
+          atom={getConditionPropertyAtom('backgroundColor')}
           variant='outlined'
           color='primary'
           label='背景色'
@@ -80,8 +81,8 @@ const Component: FC = () => {
         <PluginFormDescription last>
           アイコンをフォーカスした際に表示されるツールチップのテキストの色を設定してください。
         </PluginFormDescription>
-        <RecoilColorPicker
-          state={getConditionPropertyState('foregroundColor')}
+        <JotaiColorPicker
+          atom={getConditionPropertyAtom('foregroundColor')}
           variant='outlined'
           color='primary'
           label='テキストの色'
