@@ -1,12 +1,12 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { selectedConditionState } from '@/config/states/plugin';
+import { selectedConditionAtom } from '@/config/states/plugin';
 import { TooltipIcon } from '@/lib/components/tooltip-icon';
-import { sanitize } from 'dompurify';
+import DOMPurify from 'dompurify';
+import { useAtomValue } from 'jotai';
 import React, { type FC } from 'react';
-import { useRecoilValue } from 'recoil';
 
 const Emoji: FC = () => {
-  const condition = useRecoilValue(selectedConditionState);
+  const condition = useAtomValue(selectedConditionAtom);
   if (condition.type !== 'emoji') {
     return null;
   }
@@ -14,7 +14,7 @@ const Emoji: FC = () => {
 };
 
 const Icon: FC = () => {
-  const condition = useRecoilValue(selectedConditionState);
+  const condition = useAtomValue(selectedConditionAtom);
   if (condition.type !== 'icon') {
     return null;
   }
@@ -22,7 +22,7 @@ const Icon: FC = () => {
 };
 
 const Component: FC = () => {
-  const condition = useRecoilValue(selectedConditionState);
+  const condition = useAtomValue(selectedConditionAtom);
 
   return (
     <div className='w-24 h-24 grid place-items-center border rounded-sm'>
@@ -38,7 +38,7 @@ const Component: FC = () => {
               color: condition.foregroundColor,
             }}
           >
-            <div dangerouslySetInnerHTML={{ __html: sanitize(condition.label) }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(condition.label) }} />
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
