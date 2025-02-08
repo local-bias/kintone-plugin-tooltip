@@ -1,5 +1,6 @@
 import { PluginErrorBoundary } from '@/lib/components/error-boundary';
 import { URL_BANNER, URL_PROMOTION } from '@/lib/static';
+import { store } from '@/lib/store';
 import {
   Notification,
   PluginBanner,
@@ -9,9 +10,9 @@ import {
 } from '@konomi-app/kintone-utilities-react';
 import { LoaderWithLabel } from '@konomi-app/ui-react';
 import { ThemeProvider } from '@mui/material';
+import { Provider } from 'jotai';
 import { SnackbarProvider } from 'notistack';
-import React, { FC, Suspense } from 'react';
-import { RecoilRoot } from 'recoil';
+import { FC, Suspense } from 'react';
 import config from '../../plugin.config.mjs';
 import Footer from './components/footer';
 import Form from './components/form';
@@ -19,8 +20,8 @@ import Sidebar from './components/sidebar';
 import { myTheme } from './components/theme';
 
 const Component: FC = () => (
-  <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
-    <RecoilRoot>
+  <Provider store={store}>
+    <Suspense fallback={<LoaderWithLabel label='画面の描画を待機しています' />}>
       <ThemeProvider theme={myTheme}>
         <PluginErrorBoundary>
           <PluginConfigProvider config={config}>
@@ -42,9 +43,14 @@ const Component: FC = () => (
           </PluginConfigProvider>
         </PluginErrorBoundary>
       </ThemeProvider>
-    </RecoilRoot>
-    <iframe title='promotion' loading='lazy' src={URL_PROMOTION} className='border-0 w-full h-16' />
-  </Suspense>
+      <iframe
+        title='promotion'
+        loading='lazy'
+        src={URL_PROMOTION}
+        className='border-0 w-full h-16'
+      />
+    </Suspense>
+  </Provider>
 );
 
 export default Component;
