@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
-import { useRecoilCallback } from 'recoil';
-import { produce } from 'immer';
-import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-
 import { getNewCondition } from '@/lib/plugin';
-import { storageState } from '../../states/plugin';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
+import { produce } from 'immer';
+import { useAtomCallback } from 'jotai/utils';
+import { FC, useCallback } from 'react';
+import { pluginConfigAtom } from '../../states/plugin';
 
 type Props = Readonly<{ addCondition: () => void }>;
 
@@ -23,16 +22,14 @@ const Component: FC<Props> = ({ addCondition }) => (
 );
 
 const Container: FC = () => {
-  const addCondition = useRecoilCallback(
-    ({ set }) =>
-      () => {
-        set(storageState, (_, _storage = _!) =>
-          produce(_storage, (draft) => {
-            draft.conditions.push(getNewCondition());
-          })
-        );
-      },
-    []
+  const addCondition = useAtomCallback(
+    useCallback((_, set) => {
+      set(pluginConfigAtom, (_, _storage = _!) =>
+        produce(_storage, (draft) => {
+          draft.conditions.push(getNewCondition());
+        })
+      );
+    }, [])
   );
 
   return <Component {...{ addCondition }} />;
