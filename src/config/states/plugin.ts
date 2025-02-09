@@ -1,91 +1,73 @@
-import { getUpdatedStorage, restorePluginConfig } from '@/lib/plugin';
-import { DefaultValue, RecoilState, atom, selector, selectorFamily } from 'recoil';
+import { restorePluginConfig } from '@/lib/plugin';
+import { produce } from 'immer';
+import { atom } from 'jotai';
+import { atomWithDefault } from 'jotai/utils';
+import { SetStateAction } from 'react';
 
-const PREFIX = 'plugin';
+export const pluginConfigAtom = atom<Plugin.Config>(restorePluginConfig());
 
-export const storageState = atom<Plugin.Config>({
-  key: `${PREFIX}storageState`,
-  default: restorePluginConfig(),
+export const loadingAtom = atom<boolean>(false);
+
+export const pluginConditionsAtom = atom(
+  (get) => get(pluginConfigAtom).conditions,
+  (_, set, newValue: SetStateAction<Plugin.Condition[]>) => {
+    set(pluginConfigAtom, (current) =>
+      produce(current, (draft) => {
+        draft.conditions = typeof newValue === 'function' ? newValue(draft.conditions) : newValue;
+      })
+    );
+  }
+);
+
+export const selectedConditionIdAtom = atomWithDefault<string>((get) => {
+  const config = get(pluginConfigAtom);
+  return config.conditions[0].id;
 });
 
-export const loadingState = atom<boolean>({
-  key: `${PREFIX}loadingState`,
-  default: false,
-});
-
-export const conditionsState = selector<Plugin.Condition[]>({
-  key: `${PREFIX}conditionsState`,
-  get: ({ get }) => get(storageState).conditions,
-  set: ({ set }, newValue) => {
-    if (newValue instanceof DefaultValue) {
+export const selectedConditionAtom = atom(
+  (get) => {
+    const conditions = get(pluginConditionsAtom);
+    const selectedConditionId = get(selectedConditionIdAtom);
+    return conditions.find((condition) => condition.id === selectedConditionId) ?? conditions[0]!;
+  },
+  (get, set, newValue: SetStateAction<Plugin.Condition>) => {
+    const selectedConditionId = get(selectedConditionIdAtom);
+    const conditions = get(pluginConditionsAtom);
+    const index = conditions.findIndex((condition) => condition.id === selectedConditionId);
+    if (index === -1) {
       return;
     }
-    set(storageState, (current) => {
-      return { ...current, conditions: newValue };
-    });
-  },
-});
-
-export const selectedConditionIdState = atom<string>({
-  key: `${PREFIX}selectedConditionIdState`,
-  default: selector<string>({
-    key: `${PREFIX}selectedConditionIdState/default`,
-    get: ({ get }) => get(conditionsState)[0].id,
-  }),
-});
-
-export const selectedConditionState = selector<Plugin.Condition>({
-  key: `${PREFIX}selectedConditionState`,
-  get: ({ get }) => {
-    const storage = get(storageState);
-    const selectedConditionId = get(selectedConditionIdState);
-    return (
-      storage.conditions.find((condition) => condition.id === selectedConditionId) ??
-      storage.conditions[0]
+    set(pluginConfigAtom, (current) =>
+      produce(current, (draft) => {
+        draft.conditions[index] =
+          typeof newValue === 'function' ? newValue(draft.conditions[index]) : newValue;
+      })
     );
-  },
+  }
+);
+
+export const conditionsLengthAtom = atom<number>((get) => {
+  const conditions = get(pluginConditionsAtom);
+  return conditions.length;
 });
 
-export const conditionsLengthState = selector<number>({
-  key: `${PREFIX}conditionsLengthState`,
-  get: ({ get }) => {
-    const conditions = get(conditionsState);
-    return conditions.length;
-  },
-});
-
-const conditionPropertyState = selectorFamily<
-  Plugin.Condition[keyof Plugin.Condition],
-  keyof Plugin.Condition
->({
-  key: `${PREFIX}conditionPropertyState`,
-  get:
-    (key) =>
-    ({ get }) => {
-      return get(selectedConditionState)[key];
+export const getConditionPropertyAtom = <T extends keyof Plugin.Condition>(property: T) =>
+  atom(
+    (get) => {
+      return get(selectedConditionAtom)[property];
     },
-  set:
-    (key) =>
-    ({ get, set }, newValue) => {
-      const conditionId = get(selectedConditionState).id;
-      set(storageState, (current) => {
-        if (newValue instanceof DefaultValue) {
-          return current;
-        }
-        const conditionIndex = current.conditions.findIndex(
-          (condition) => condition.id === conditionId
-        );
-        return getUpdatedStorage(current, { conditionIndex, key, value: newValue });
-      });
-    },
-});
+    (_, set, newValue: SetStateAction<Plugin.Condition[T]>) => {
+      set(selectedConditionAtom, (condition) =>
+        produce(condition, (draft) => {
+          draft[property] = typeof newValue === 'function' ? newValue(draft[property]) : newValue;
+        })
+      );
+    }
+  );
 
-export const getConditionPropertyState = <T extends keyof Plugin.Condition>(property: T) =>
-  conditionPropertyState(property) as unknown as RecoilState<Plugin.Condition[T]>;
-
-export const conditionFieldCodeState = getConditionPropertyState('fieldCode');
-export const conditionLabelState = getConditionPropertyState('label');
-export const conditionTypeState = getConditionPropertyState('type');
-export const conditionIconTypeState = getConditionPropertyState('iconType');
-export const conditionIconColorState = getConditionPropertyState('iconColor');
-export const conditionEmojiState = getConditionPropertyState('emoji');
+export const conditionFieldCodeAtom = getConditionPropertyAtom('fieldCode');
+export const conditionLabelAtom = getConditionPropertyAtom('label');
+export const conditionTypeAtom = getConditionPropertyAtom('type');
+export const conditionIconTypeAtom = getConditionPropertyAtom('iconType');
+export const conditionIconColorAtom = getConditionPropertyAtom('iconColor');
+export const conditionEmojiAtom = getConditionPropertyAtom('emoji');
