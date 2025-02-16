@@ -3,6 +3,7 @@ import {
   conditionIconTypeAtom,
   conditionTypeAtom,
 } from '@/config/states/plugin';
+import { IconType } from '@/schema/plugin-config';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
@@ -22,7 +23,7 @@ const Component: FC = () => {
   const [type, setType] = useAtom(conditionIconTypeAtom);
   const color = useAtomValue(conditionIconColorAtom);
 
-  const onChange = (value: Plugin.IconType) => {
+  const onChange = (value: IconType) => {
     setType(value);
   };
 
@@ -35,7 +36,7 @@ const Component: FC = () => {
         select
         label='アイコンタイプ'
         value={type}
-        onChange={(e) => onChange(e.target.value as Plugin.IconType)}
+        onChange={(e) => onChange(e.target.value as IconType)}
       >
         <MenuItem value='info'>
           <div className='flex items-center gap-4'>
