@@ -1,7 +1,8 @@
 import { TooltipIcon } from '@/lib/components/tooltip-icon';
-import React, { FC } from 'react';
+import { PluginCondition } from '@/schema/plugin-config';
+import { FC } from 'react';
 
-type Props = { condition: Plugin.Condition };
+type Props = { condition: PluginCondition };
 
 const TooltipIconContainer: FC<Props> = ({ condition }) => {
   if (condition.type !== 'icon') {
