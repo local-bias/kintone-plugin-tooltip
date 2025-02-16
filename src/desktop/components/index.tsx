@@ -1,13 +1,14 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { PluginCondition } from '@/schema/plugin-config';
 import { isMobile } from '@konomi-app/kintone-utilities';
 import DOMPurify from 'dompurify';
-import React, { type FC } from 'react';
+import { type FC } from 'react';
 import TooltipEmojiContainer from './emoji';
 import TooltipIconContainer from './icon';
 
 type Props = {
-  condition: Plugin.Condition;
+  condition: PluginCondition;
 };
 
 const commonCss = 'absolute right-2 p-0 top-1/2 -translate-y-1/2 grid place-items-center';
