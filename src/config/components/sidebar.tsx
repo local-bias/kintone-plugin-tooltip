@@ -1,13 +1,14 @@
 import { pluginConditionsAtom, selectedConditionIdAtom } from '@/config/states/plugin';
 import { TooltipIcon } from '@/lib/components/tooltip-icon';
 import { getNewCondition } from '@/lib/plugin';
+import { PluginCondition } from '@/schema/plugin-config';
 import { BundledSidebar } from '@konomi-app/kintone-utilities-react';
 import { useAtom } from 'jotai';
 import { RESET } from 'jotai/utils';
 import { useSnackbar } from 'notistack';
 import { FC, useCallback } from 'react';
 
-const Icon = ({ condition }: { condition: Plugin.Condition }) => {
+const Icon = ({ condition }: { condition: PluginCondition }) => {
   const { type, emoji, iconType, iconColor } = condition;
 
   if (type === 'emoji') {
@@ -20,7 +21,7 @@ const Sidebar: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [conditions, setConditions] = useAtom(pluginConditionsAtom);
   const [selectedConditionId, setSelectedConditionId] = useAtom(selectedConditionIdAtom);
-  const label = useCallback((params: { condition: Plugin.Condition; index: number }) => {
+  const label = useCallback((params: { condition: PluginCondition; index: number }) => {
     const { condition, index } = params;
 
     let label = condition.fieldCode || '未設定';
@@ -36,7 +37,7 @@ const Sidebar: FC = () => {
     );
   }, []);
 
-  const onSelectedConditionChange = (condition: Plugin.Condition | null) => {
+  const onSelectedConditionChange = (condition: PluginCondition | null) => {
     setSelectedConditionId(condition?.id ?? RESET);
   };
 
