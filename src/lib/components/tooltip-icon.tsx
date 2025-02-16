@@ -1,12 +1,13 @@
+import { IconType } from '@/schema/plugin-config';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/solid';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
-type Props = { iconType: Plugin.IconType; iconColor: string };
+type Props = { iconType: IconType; iconColor: string };
 
 const Component: FC<Props> = ({ iconType, iconColor }) => {
   switch (iconType) {
