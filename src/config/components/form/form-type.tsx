@@ -1,4 +1,5 @@
 import { conditionTypeAtom } from '@/config/states/plugin';
+import { ConditionType } from '@/schema/plugin-config';
 import { MenuItem, TextField } from '@mui/material';
 import { useAtomValue } from 'jotai';
 import { useAtomCallback } from 'jotai/utils';
@@ -9,7 +10,7 @@ const Component: FC = () => {
 
   const onChange = useAtomCallback(
     useCallback((_, set, value: string) => {
-      set(conditionTypeAtom, value as Plugin.ConditionType);
+      set(conditionTypeAtom, value as ConditionType);
     }, [])
   );
 
